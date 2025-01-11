@@ -8,13 +8,13 @@ import java.util.UUID;
 
 @Entity
 @Data
-public class Roupa {
+public class Ph {
 
     @Id
     private UUID id;
 
-    private String descricao;
+    private String tipo;
 
-    private String tamanho;
+    private int quantidade;
 
 }

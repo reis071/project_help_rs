@@ -8,13 +8,14 @@ import java.util.UUID;
 
 @Entity
 @Data
-public class Roupa {
+public class Alimento {
 
     @Id
     private UUID id;
 
     private String tipo;
 
-    private String tamanho;
+    private int quantidade;
 
+    private String medida;
 }
