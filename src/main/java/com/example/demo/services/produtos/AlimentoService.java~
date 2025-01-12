@@ -23,11 +23,11 @@ public class AlimentoService {
        return alimentoRP.save(ph);
     }
 
-    public Optional<Alimento> findById(Long id) {
+    public Optional<Alimento> findById(UUID id) {
         return alimentoRP.findById(id);
     }
 
-    public void delete(Long id) {
+    public void delete(UUID id) {
         alimentoRP.deleteById(id);
     }
 }

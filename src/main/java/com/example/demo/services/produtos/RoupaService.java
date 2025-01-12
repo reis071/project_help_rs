@@ -9,13 +9,17 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
 public class RoupaService {
 
-    private final RoupaRP roupaRP;
+    private  RoupaRP roupaRP;
 
-    public void save(Roupa roupa) {
-        roupaRP.save(roupa);
+
+    public RoupaService(RoupaRP roupaRP) {
+        this.roupaRP = roupaRP;
+    }
+
+    public Roupa save(Roupa roupa) {
+        return roupaRP.save(roupa);
     }
 
     public Optional<Roupa> findById(UUID id) {
