@@ -2,26 +2,22 @@ package com.example.demo.models.produtos;
 
 import com.example.demo.models.cd.Cd;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 
-import java.util.UUID;
+import java.util.Objects;
 
 @Entity
 public class Roupa {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    private Long id;
 
     private String tipo;
 
     private String tamanho;
 
     @ManyToOne
-    @JoinColumn(name = "cd_id")
+    @JoinColumn(name = "cd_id", nullable = false)
     private Cd cd;
 
     public Roupa() {}
@@ -47,11 +43,33 @@ public class Roupa {
         this.tamanho = tamanho;
     }
 
-    public UUID getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(Long id) {
         this.id = id;
     }
+
+    public Cd getCd() {
+        return cd;
+    }
+
+    public void setCd(Cd cd) {
+        this.cd = cd;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Roupa roupa = (Roupa) o;
+        return Objects.equals(id, roupa.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 }
+

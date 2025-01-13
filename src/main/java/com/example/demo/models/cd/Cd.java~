@@ -16,6 +16,8 @@ public class Cd {
 
     private String nome;
 
+
+
     public Cd() {}
 
     public Cd(String nome) {
@@ -38,8 +40,13 @@ public class Cd {
         this.nome = nome;
     }
 
+    public List<Roupa> getRoupas() {
+        return roupas;
+    }
 
-
+    public void setRoupas(List<Roupa> roupas) {
+        this.roupas = roupas;
+    }
 
     @Override
     public boolean equals(Object o) {
