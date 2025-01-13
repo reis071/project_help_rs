@@ -21,6 +21,7 @@ public class Alimento {
 
     private String medida;
 
+
     public Alimento() {}
 
     public Alimento(String tipo, int quantidade, String medida) {

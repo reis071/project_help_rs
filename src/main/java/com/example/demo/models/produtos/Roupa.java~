@@ -21,7 +21,7 @@ public class Roupa {
     private String tamanho;
 
     @ManyToOne
-    @JoinColumn(name = "cd_id")
+    @JoinColumn(name = "cd_id", nullable = false)
     private Cd cd;
 
     public Roupa() {}
