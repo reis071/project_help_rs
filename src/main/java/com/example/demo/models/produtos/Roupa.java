@@ -22,9 +22,10 @@ public class Roupa {
 
     public Roupa() {}
 
-    public Roupa(String tipo, String tamanho) {
+    public Roupa(String tipo, String tamanho, Cd cd) {
         this.tipo = tipo;
         this.tamanho = tamanho;
+        this.cd = cd;
     }
 
     public String getTipo() {

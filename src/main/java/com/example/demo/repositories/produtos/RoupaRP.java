@@ -1,5 +1,6 @@
 package com.example.demo.repositories.produtos;
 
+import com.example.demo.models.cd.Cd;
 import com.example.demo.models.produtos.Roupa;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -12,5 +13,5 @@ import java.util.Optional;
 @Repository
 public interface RoupaRP extends JpaRepository<Roupa, Long> {
 
-    List<Roupa> findByTipoAndTamanho(String tipo, String tamanho);
+    List<Roupa> findByCd(Cd cd);
 }

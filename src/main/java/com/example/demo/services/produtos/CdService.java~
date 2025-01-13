@@ -27,10 +27,10 @@ public class CdService {
 
     public Roupa registrarRoupa(String tipo,String tamanho, String nomeCd) {
 
-        Cd cd = cdRP.findByNome(nomeCd).stream()
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("CD com o nome fornecido não foi encontrado."));
-
+        Optional<Cd> cdOptional = cdRP.findByNome(nomeCd).stream().findFirst();
+        if (cdOptional.isPresent()) {
+            Cd cd = cdOptional.get();
+        }
         if (roupaRP.findByCd(cd).size() > 999){
             throw new RuntimeException("Limite de roupa atingido");
         }
