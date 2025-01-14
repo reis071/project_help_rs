@@ -1,19 +1,24 @@
 package com.example.demo.models.produtos;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.example.demo.models.cd.Cd;
+import jakarta.persistence.*;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 import java.util.Objects;
 
 @Entity
+@Getter @Setter
+@NoArgsConstructor
 public class Alimento {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
 
     private String tipo;
 
@@ -21,44 +26,16 @@ public class Alimento {
 
     private String medida;
 
-    public Alimento() {}
+    @ManyToOne
+    @JoinColumn(name = "cd_id", nullable = false)
+    private Cd cd;
 
-    public Alimento(String tipo, int quantidade, String medida) {
+
+    public Alimento(String tipo, int quantidade, String medida, Cd cd) {
         this.tipo = tipo;
         this.quantidade = quantidade;
         this.medida = medida;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
-
-    public int getQuantidade() {
-        return quantidade;
-    }
-
-    public void setQuantidade(int quantidade) {
-        this.quantidade = quantidade;
-    }
-
-    public String getMedida() {
-        return medida;
-    }
-
-    public void setMedida(String medida) {
-        this.medida = medida;
+        this.cd = cd;
     }
 
     @Override
@@ -73,4 +50,6 @@ public class Alimento {
     public int hashCode() {
         return Objects.hashCode(id);
     }
+
+
 }

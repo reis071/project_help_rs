@@ -2,10 +2,16 @@ package com.example.demo.models.produtos;
 
 import com.example.demo.models.cd.Cd;
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Objects;
 
 @Entity
+@NoArgsConstructor
+@Getter @Setter
 public class Roupa {
 
     @Id
@@ -20,43 +26,9 @@ public class Roupa {
     @JoinColumn(name = "cd_id", nullable = false)
     private Cd cd;
 
-    public Roupa() {}
-
     public Roupa(String tipo, String tamanho, Cd cd) {
         this.tipo = tipo;
         this.tamanho = tamanho;
-        this.cd = cd;
-    }
-
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
-
-    public String getTamanho() {
-        return tamanho;
-    }
-
-    public void setTamanho(String tamanho) {
-        this.tamanho = tamanho;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Cd getCd() {
-        return cd;
-    }
-
-    public void setCd(Cd cd) {
         this.cd = cd;
     }
 
