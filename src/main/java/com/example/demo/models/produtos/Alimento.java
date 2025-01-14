@@ -12,13 +12,11 @@ import java.util.Objects;
 
 @Entity
 @Getter @Setter
-@NoArgsConstructor
 public class Alimento {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
 
     private String tipo;
 
@@ -30,6 +28,7 @@ public class Alimento {
     @JoinColumn(name = "cd_id", nullable = false)
     private Cd cd;
 
+    public Alimento() {}
 
     public Alimento(String tipo, int quantidade, String medida, Cd cd) {
         this.tipo = tipo;

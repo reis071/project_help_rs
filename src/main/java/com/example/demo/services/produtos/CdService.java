@@ -5,31 +5,29 @@ import com.example.demo.models.produtos.Alimento;
 import com.example.demo.models.produtos.Roupa;
 import com.example.demo.repositories.produtos.AlimentoRP;
 import com.example.demo.repositories.produtos.RoupaRP;
+import lombok.AllArgsConstructor;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import com.example.demo.repositories.cd.CdRp;
 
-import java.util.List;
 import java.util.Optional;
 
+
+@AllArgsConstructor
 @Service
 public class CdService {
 
-    private CdRp cdRP;
-    private RoupaRP roupaRP;
-    private AlimentoRP alimentoRP;
+    private final CdRp cdRP;
+    private final RoupaRP roupaRP;
+    private final AlimentoRP alimentoRP;
 
-    public CdService(CdRp cdRP, RoupaRP roupaRP) {
-        this.cdRP = cdRP;
-        this.roupaRP = roupaRP;
-        this.alimentoRP = alimentoRP;
-    }
 
     public Cd registrarCd(String nome) {
         Cd cd = new Cd(nome);
         return cdRP.save(cd);
     }
 
-    public Roupa registrarRoupa(String tipo,String tamanho, String nomeCd) {
+    public  Roupa registrarRoupa(String tipo,String tamanho, String nomeCd) {
 
         Cd cd = cdRP.findByNome(nomeCd).stream()
                 .findFirst()
@@ -39,7 +37,13 @@ public class CdService {
             throw new RuntimeException("Limite de roupa atingido");
         }
 
-        return  roupaRP.save(new Roupa(tipo,tamanho,cd));
+        Roupa novaRoupa = new Roupa(tipo, tamanho, cd);
+
+        roupaRP.save(novaRoupa);
+        cd.getRoupas().add(novaRoupa);
+        cdRP.save(cd);
+
+        return novaRoupa;
     }
 
     public Alimento registrarAlimento(String tipo, int quantidade, String medida,String nomeCd) {
@@ -48,13 +52,14 @@ public class CdService {
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("CD com o nome fornecido não foi encontrado."));
 
-        int quantidadeTotal = alimentoRP.findByCd(cd).stream().mapToInt(Alimento::getQuantidade).sum();;
+             int quantidadeTotal = alimentoRP.findByCd(cd).stream().mapToInt(Alimento::getQuantidade).sum();
 
-        if (quantidadeTotal + quantidade > 999){
-            throw new RuntimeException("Limite de alimento atingido");
-        }
+             if (quantidadeTotal + quantidade > 999) {
+                 throw new RuntimeException("Limite de alimento atingido");
+             }
 
-        return  alimentoRP.save(new Alimento(tipo,quantidade,medida,cd));
+             return alimentoRP.save(new Alimento(tipo, quantidade, medida, cd));
+
     }
 
 }

@@ -1,9 +1,7 @@
 package com.example.demo.models.produtos;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.example.demo.models.cd.Cd;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.Objects;
@@ -20,6 +18,10 @@ public class Ph {
     private String tipo;
 
     private int quantidade;
+
+    @ManyToOne
+    @JoinColumn(name = "cd_id", nullable = false)
+    private Cd cd;
 
     public Ph() {}
 

@@ -1,38 +1,40 @@
 package com.example.demo.models.produtos;
 
 import com.example.demo.models.cd.Cd;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 import java.util.Objects;
 
 @Entity
-@NoArgsConstructor
 @Getter @Setter
-public class Roupa {
+@NoArgsConstructor
+public class Alimento {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+
     private String tipo;
 
-    private String tamanho;
+    private int quantidade;
 
+    private String medida;
 
     @ManyToOne
     @JoinColumn(name = "cd_id", nullable = false)
-    @JsonBackReference
     private Cd cd;
 
-    public Roupa(String tipo, String tamanho,Cd cd) {
+
+    public Alimento(String tipo, int quantidade, String medida, Cd cd) {
         this.tipo = tipo;
-        this.tamanho = tamanho;
+        this.quantidade = quantidade;
+        this.medida = medida;
         this.cd = cd;
     }
 
@@ -40,13 +42,14 @@ public class Roupa {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Roupa roupa = (Roupa) o;
-        return Objects.equals(id, roupa.id);
+        Alimento alimento = (Alimento) o;
+        return Objects.equals(id, alimento.id);
     }
 
     @Override
     public int hashCode() {
         return Objects.hashCode(id);
     }
-}
 
+
+}
