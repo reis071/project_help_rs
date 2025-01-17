@@ -1,6 +1,5 @@
 package com.example.demo.controller.cd;
 
-import com.example.demo.dto.produtos.AlimentoDTO;
 import com.example.demo.dto.produtos.RoupaDTO;
 import com.example.demo.models.cd.Cd;
 import com.example.demo.models.produtos.Alimento;
@@ -35,7 +34,7 @@ public class CdController {
     }
 
     @PostMapping("/registrarAlimento")
-    public AlimentoDTO registrarAlimento(@RequestBody Alimento alimento) {
+    public Alimento registrarAlimento(@RequestBody Alimento alimento) {
         return cdService.registrarAlimento(alimento.getTipo(),alimento.getQuantidade(),alimento.getMedida(),alimento.getCd().getNome());
     }
 

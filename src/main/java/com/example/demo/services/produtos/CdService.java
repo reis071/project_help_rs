@@ -1,5 +1,6 @@
 package com.example.demo.services.produtos;
 
+import com.example.demo.dto.produtos.AlimentoDTO;
 import com.example.demo.dto.produtos.RoupaDTO;
 import com.example.demo.models.cd.Cd;
 import com.example.demo.models.produtos.Alimento;
@@ -48,7 +49,8 @@ public class CdService {
         return new RoupaDTO(novaRoupa.getTipo(),novaRoupa.getTamanho());
     }
 
-    public Alimento registrarAlimento(String tipo, int quantidade, String medida,String nomeCd) {
+    @Transactional
+    public AlimentoDTO registrarAlimento(String tipo, int quantidade, String medida, String nomeCd) {
 
         Cd cd = cdRP.findByNome(nomeCd).stream()
                 .findFirst()
@@ -60,7 +62,13 @@ public class CdService {
                  throw new RuntimeException("Limite de alimento atingido");
              }
 
-             return alimentoRP.save(new Alimento(tipo, quantidade, medida, cd));
+        Alimento novoAlimento = new Alimento(tipo,  quantidade, medida, cd);
+
+        alimentoRP.save(novoAlimento);
+        cd.getAlimentos().add(novoAlimento);
+        cdRP.save(cd);
+
+        return new AlimentoDTO(novoAlimento.getTipo(),novoAlimento.getQuantidade(),novoAlimento.getMedida());
     }
 
 }
