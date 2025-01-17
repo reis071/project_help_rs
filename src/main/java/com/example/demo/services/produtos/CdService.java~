@@ -71,6 +71,4 @@ public class CdService {
         return new AlimentoDTO(novoAlimento.getTipo(),novoAlimento.getQuantidade(),novoAlimento.getMedida());
     }
 
-
-
 }
