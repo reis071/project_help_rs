@@ -2,9 +2,8 @@ package com.example.demo.models.produtos;
 
 import com.example.demo.models.cd.Cd;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Data;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,7 +11,6 @@ import lombok.Setter;
 import java.util.Objects;
 
 @Entity
-@NoArgsConstructor
 @Getter @Setter
 public class Roupa {
 
@@ -26,9 +24,11 @@ public class Roupa {
 
 
     @ManyToOne
-    @JoinColumn(name = "cd_id", nullable = false)
+    @JoinColumn(name = "cd_id")
     @JsonBackReference
     private Cd cd;
+
+    public Roupa() {}
 
     public Roupa(String tipo, String tamanho,Cd cd) {
         this.tipo = tipo;

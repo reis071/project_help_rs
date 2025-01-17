@@ -1,5 +1,6 @@
 package com.example.demo.controller.cd;
 
+import com.example.demo.dto.produtos.RoupaDTO;
 import com.example.demo.models.cd.Cd;
 import com.example.demo.models.produtos.Alimento;
 import com.example.demo.models.produtos.Roupa;
@@ -7,21 +8,28 @@ import com.example.demo.services.produtos.CdService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 
 @RestController
+
 @RequestMapping("/cd")
-@AllArgsConstructor
 public class CdController {
 
-    private final CdService cdService;
+    private  CdService cdService;
 
-    @PostMapping("/registrarCd")
-    public Cd registrarCd(@RequestBody Cd cd) {
-        return cdService.registrarCd(cd.getNome());
+    public CdController(CdService cdService) {
+        this.cdService = cdService;
     }
 
-    @PostMapping("/registrarRoupa")
-    public Roupa registrarRoupa(@RequestBody Roupa roupa) {
+    @PostMapping("/registrarCd")
+    public Cd registrarCd(@RequestBody Map<String, String> payload) {
+        String nome = payload.get("nome");
+        return cdService.registrarCd(nome);
+    }
+
+    @PostMapping(value="/registrarRoupa",consumes = {"application/json", "application/json;charset=UTF-8"})
+    public RoupaDTO registrarRoupa(@RequestBody Roupa roupa) {
         return cdService.registrarRoupa(roupa.getTipo(),roupa.getTamanho(),roupa.getCd().getNome());
     }
 

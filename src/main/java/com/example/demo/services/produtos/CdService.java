@@ -1,10 +1,12 @@
 package com.example.demo.services.produtos;
 
+import com.example.demo.dto.produtos.RoupaDTO;
 import com.example.demo.models.cd.Cd;
 import com.example.demo.models.produtos.Alimento;
 import com.example.demo.models.produtos.Roupa;
 import com.example.demo.repositories.produtos.AlimentoRP;
 import com.example.demo.repositories.produtos.RoupaRP;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
@@ -22,12 +24,12 @@ public class CdService {
     private final AlimentoRP alimentoRP;
 
 
-    public Cd registrarCd(String nome) {
-        Cd cd = new Cd(nome);
-        return cdRP.save(cd);
+    public Cd registrarCd(String cd) {
+        return cdRP.save(new Cd(cd));
     }
 
-    public  Roupa registrarRoupa(String tipo,String tamanho, String nomeCd) {
+    @Transactional
+    public RoupaDTO registrarRoupa(String tipo, String tamanho, String nomeCd) {
 
         Cd cd = cdRP.findByNome(nomeCd).stream()
                 .findFirst()
@@ -43,7 +45,7 @@ public class CdService {
         cd.getRoupas().add(novaRoupa);
         cdRP.save(cd);
 
-        return novaRoupa;
+        return new RoupaDTO(novaRoupa.getTipo(),novaRoupa.getTamanho());
     }
 
     public Alimento registrarAlimento(String tipo, int quantidade, String medida,String nomeCd) {
@@ -59,7 +61,6 @@ public class CdService {
              }
 
              return alimentoRP.save(new Alimento(tipo, quantidade, medida, cd));
-
     }
 
 }

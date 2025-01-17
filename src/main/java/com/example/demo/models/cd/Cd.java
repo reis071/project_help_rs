@@ -4,10 +4,9 @@ package com.example.demo.models.cd;
 import com.example.demo.models.produtos.Alimento;
 import com.example.demo.models.produtos.Ph;
 import com.example.demo.models.produtos.Roupa;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.Data;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,19 +23,16 @@ public class Cd {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(unique = true)
     private String nome;
 
-
-    @OneToMany(mappedBy = "cd", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @JsonManagedReference
+    @OneToMany(mappedBy = "cd", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Roupa> roupas  = new HashSet<>();
 
-    @OneToMany(mappedBy = "cd", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @JsonManagedReference
+    @OneToMany(mappedBy = "cd", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Alimento> alimentos = new HashSet<>();
 
-    @OneToMany(mappedBy = "cd", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @JsonManagedReference
+    @OneToMany(mappedBy = "cd", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Ph> produtosHigiene = new HashSet<>();
 
     public Cd(String nome) {
