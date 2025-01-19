@@ -2,6 +2,7 @@ package com.example.demo.models.produtos;
 
 import com.example.demo.models.cd.Cd;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import lombok.Getter;
@@ -48,5 +49,6 @@ public class Roupa {
     public int hashCode() {
         return Objects.hashCode(id);
     }
+
 }
 

@@ -11,22 +11,24 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
-
+@AllArgsConstructor
 @RestController
-
 @RequestMapping("/cd")
 public class CdController {
 
-    private  CdService cdService;
+    private final CdService cdService;
 
-    public CdController(CdService cdService) {
-        this.cdService = cdService;
-    }
+
 
     @PostMapping("/registrarCd")
     public Cd registrarCd(@RequestBody Map<String, String> payload) {
         String nome = payload.get("nome");
         return cdService.registrarCd(nome);
+    }
+
+    @GetMapping("/buscarCd")
+    public Cd listarCd(@RequestParam String nome) {
+        return cdService.buscarCd(nome);
     }
 
     @PostMapping(value="/registrarRoupa",consumes = {"application/json", "application/json;charset=UTF-8"})

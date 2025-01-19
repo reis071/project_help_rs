@@ -1,5 +1,6 @@
 package com.example.demo.controller.cd;
 
+import com.example.demo.dto.produtos.AlimentoDTO;
 import com.example.demo.dto.produtos.RoupaDTO;
 import com.example.demo.models.cd.Cd;
 import com.example.demo.models.produtos.Alimento;
@@ -10,22 +11,24 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
-
+@AllArgsConstructor
 @RestController
-
 @RequestMapping("/cd")
 public class CdController {
 
-    private  CdService cdService;
+    private final CdService cdService;
 
-    public CdController(CdService cdService) {
-        this.cdService = cdService;
-    }
+
 
     @PostMapping("/registrarCd")
     public Cd registrarCd(@RequestBody Map<String, String> payload) {
         String nome = payload.get("nome");
         return cdService.registrarCd(nome);
+    }
+
+    @GetMapping("/buscarCd/{nome}")
+    public Cd listarCd(@PathVariable String nome) {
+        return cdService.buscarCd(nome);
     }
 
     @PostMapping(value="/registrarRoupa",consumes = {"application/json", "application/json;charset=UTF-8"})
@@ -34,7 +37,7 @@ public class CdController {
     }
 
     @PostMapping("/registrarAlimento")
-    public Alimento registrarAlimento(@RequestBody Alimento alimento) {
+    public AlimentoDTO registrarAlimento(@RequestBody Alimento alimento) {
         return cdService.registrarAlimento(alimento.getTipo(),alimento.getQuantidade(),alimento.getMedida(),alimento.getCd().getNome());
     }
 

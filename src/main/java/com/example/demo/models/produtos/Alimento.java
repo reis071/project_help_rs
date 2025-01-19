@@ -1,6 +1,7 @@
 package com.example.demo.models.produtos;
 
 import com.example.demo.models.cd.Cd;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -26,6 +27,7 @@ public class Alimento {
 
     @ManyToOne
     @JoinColumn(name = "cd_id", nullable = false)
+    @JsonBackReference
     private Cd cd;
 
     public Alimento() {}
