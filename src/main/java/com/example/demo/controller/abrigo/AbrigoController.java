@@ -1,6 +1,7 @@
 package com.example.demo.controller.abrigo;
 
 import com.example.demo.models.abrigo.Abrigo;
+import com.example.demo.models.pedido.Pedido;
 import com.example.demo.services.abrigo.AbrigoService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,5 +21,9 @@ public class AbrigoController {
         return abrigoService.registrarAbrigo(abrigo);
     }
 
+    @PostMapping("/fazerPedido")
+    public Pedido fazerPedido(@RequestBody Pedido pedido) {
+        return abrigoService.fazerPedido(pedido);
+    }
 
 }
