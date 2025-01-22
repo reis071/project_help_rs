@@ -44,6 +44,6 @@ public class AbrigoService {
 
         pedidoRP.save(pedidoNovo);
 
-        return new PedidoDTO(pedidoNovo);
+
     }
 }

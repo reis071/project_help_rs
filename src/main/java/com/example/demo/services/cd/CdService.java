@@ -1,9 +1,15 @@
 package com.example.demo.services.cd;
 
 
+import com.example.demo.dto.cd.CdDTO;
+import com.example.demo.dto.pedido.PedidoDTO;
+import com.example.demo.models.abrigo.Abrigo;
 import com.example.demo.models.cd.Cd;
 
+import com.example.demo.models.pedido.Pedido;
 import com.example.demo.models.produtos.Produtos;
+import com.example.demo.repositories.abrigo.AbrigoRP;
+import com.example.demo.repositories.pedido.PedidoRP;
 import com.example.demo.repositories.produtos.ProdutosRP;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -12,6 +18,11 @@ import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import com.example.demo.repositories.cd.CdRp;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
 
 @AllArgsConstructor
 @Service
@@ -19,29 +30,29 @@ public class CdService {
 
     private final CdRp cdRP;
     private final ProdutosRP produtosRP;
+    private final PedidoRP pedidoRP;
+    private final AbrigoRP abrigoRP;
 
-    public Cd registrarCd(String cd) {
-        return cdRP.save(new Cd(cd));
+
+    public CdDTO registrarCd(Cd cd) {
+         cdRP.save(cd);
+
+        return new CdDTO(cd);
     }
 
     @Transactional
     public Cd buscarCd(String nomeCd){
 
-        Cd cd = cdRP.findByNome(nomeCd)
-                .stream()
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("CD não encontrado"));
+        Cd cd = cdRP.findByNome(nomeCd);
 
         Hibernate.initialize(cd.getProdutos());
 
         return cd;
-
     }
 
     @Transactional
     public Produtos cadastrarProdutosCd(Produtos produtos) {
-        Cd cd = cdRP.findByNome(produtos.getCd().getNome()).stream().findFirst().
-                orElseThrow(() -> new RuntimeException("CD nao encontrado"));
+        Cd cd = cdRP.findByNome(produtos.getCd().getNome());
 
         cd.getProdutos().add(produtos);
         produtos.setCd(cd);
@@ -49,6 +60,68 @@ public class CdService {
     }
 
 
+    @Transactional
+    public List<PedidoDTO> visualizarPedido(String nomeCd) {
+
+        Cd cd = cdRP.findByNome(nomeCd);
+
+
+        List<Pedido> pedidos = pedidoRP.findStatus(cd);
+
+        return pedidos.stream()
+                .map(PedidoDTO::new)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public String aceitarPedido(UUID id) {
+        Pedido pedido = pedidoRP.findById(id)
+                .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
+
+        Cd cd = cdRP.findByNome(pedido.getPara().getNome());
+
+        // Atualiza a quantidade no CD
+        cd.getProdutos().forEach(produto -> {
+            if (produto.getDescricao().equals(pedido.getProduto())) {
+                if (produto.getQuantidadeDisponivel() < pedido.getQuantidade()) {
+                    throw new RuntimeException("Quantidade disponível insuficiente no CD.");
+                }
+                produto.setQuantidadeDisponivel(produto.getQuantidadeDisponivel() - pedido.getQuantidade());
+            }
+        });
+
+        // Busca o Abrigo
+        Abrigo abrigo = abrigoRP.findByNome(pedido.getDe().getNome());
+
+        // Atualiza ou adiciona o produto no abrigo
+        Produtos produtoNoAbrigo = abrigo.getProdutos().stream()
+                .filter(p -> p.getDescricao().equals(pedido.getProduto()))
+                .findFirst()
+                .orElse(null);
+
+        if (produtoNoAbrigo != null) {
+            produtoNoAbrigo.setQuantidadeDisponivel(produtoNoAbrigo.getQuantidadeDisponivel() + pedido.getQuantidade());
+        } else {
+            Produtos novoProduto = new Produtos();
+            novoProduto.setDescricao(pedido.getProduto());
+            novoProduto.setQuantidadeDisponivel(pedido.getQuantidade());
+
+            // Salva explicitamente o novo produto
+            novoProduto = produtosRP.save(novoProduto);
+
+            abrigo.getProdutos().add(novoProduto);
+        }
+
+        // Salva as alterações
+        cdRP.save(cd);
+        abrigoRP.save(abrigo);
+
+        // Atualiza o status do pedido
+        pedido.setStatus("Aprovado");
+        pedidoRP.save(pedido);
+
+        return "Pedido aprovado";
+    }
 
 
 }

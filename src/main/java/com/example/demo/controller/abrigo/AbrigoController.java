@@ -1,5 +1,6 @@
 package com.example.demo.controller.abrigo;
 
+import com.example.demo.dto.pedido.PedidoDTO;
 import com.example.demo.models.abrigo.Abrigo;
 import com.example.demo.models.pedido.Pedido;
 import com.example.demo.services.abrigo.AbrigoService;
@@ -22,7 +23,7 @@ public class AbrigoController {
     }
 
     @PostMapping("/fazerPedido")
-    public Pedido fazerPedido(@RequestBody Pedido pedido) {
+    public PedidoDTO fazerPedido(@RequestBody Pedido pedido) {
         return abrigoService.fazerPedido(pedido);
     }
 

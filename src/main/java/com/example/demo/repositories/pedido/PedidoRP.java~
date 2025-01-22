@@ -13,6 +13,6 @@ import java.util.UUID;
 @Repository
 public interface PedidoRP extends JpaRepository<Pedido, UUID> {
 
-    @Query("SELECT p FROM Pedido p WHERE p.status = 'Analise' AND p.para = :cd")
+    @Query("SELECT p FROM Pedido p WHERE p.status = 'Analise' AND p.para == :cd")
     List<Pedido> findStatus(@Param("cd") Cd cd);
 }

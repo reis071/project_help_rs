@@ -8,6 +8,6 @@ import java.util.List;
 
 @Repository
 public interface CdRp extends JpaRepository<Cd, Long> {
-    List<Cd> findByNome(String nome);
+    Cd findByNome(String nome);
 
 }
