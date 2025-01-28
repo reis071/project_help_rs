@@ -80,7 +80,7 @@ public class CdService {
 
         Cd cd = cdRP.findByNome(pedido.getPara().getNome());
 
-        // Atualiza a quantidade no CD
+
         cd.getProdutos().forEach(produto -> {
             if (produto.getDescricao().equals(pedido.getProduto())) {
                 if (produto.getQuantidadeDisponivel() < pedido.getQuantidade()) {
@@ -90,10 +90,10 @@ public class CdService {
             }
         });
 
-        // Busca o Abrigo
+
         Abrigo abrigo = abrigoRP.findByNome(pedido.getDe().getNome());
 
-        // Atualiza ou adiciona o produto no abrigo
+
         Produtos produtoNoAbrigo = abrigo.getProdutos().stream()
                 .filter(p -> p.getDescricao().equals(pedido.getProduto()))
                 .findFirst()
@@ -106,22 +106,32 @@ public class CdService {
             novoProduto.setDescricao(pedido.getProduto());
             novoProduto.setQuantidadeDisponivel(pedido.getQuantidade());
 
-            // Salva explicitamente o novo produto
+
             novoProduto = produtosRP.save(novoProduto);
 
             abrigo.getProdutos().add(novoProduto);
         }
 
-        // Salva as alterações
+
         cdRP.save(cd);
         abrigoRP.save(abrigo);
 
-        // Atualiza o status do pedido
+
         pedido.setStatus("Aprovado");
         pedidoRP.save(pedido);
 
         return "Pedido aprovado";
     }
 
+    @Transactional
+    public String recusarPedido(UUID id) {
+        Pedido pedido = pedidoRP.findById(id).orElseThrow(() -> new RuntimeException("Pedido não encontrado!"));
 
+        pedido.setStatus("Recusado");
+
+        pedidoRP.save(pedido);
+
+        return "Pedido recusado";
+
+    }
 }

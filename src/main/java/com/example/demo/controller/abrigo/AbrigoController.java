@@ -26,5 +26,5 @@ public class AbrigoController {
     public PedidoDTO fazerPedido(@RequestBody Pedido pedido) {
         return abrigoService.fazerPedido(pedido);
     }
-
+    
 }
