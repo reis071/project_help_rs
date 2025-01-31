@@ -34,7 +34,7 @@ public class Pedido {
     @ManyToOne
     private Cd para;
 
-    public Pedido(String produto, int quantidade, Cd para, Abrigo de) {
+    public Pedido(String produto, int quantidade, Abrigo de, Cd para) {
         this.status = "Analise";
         this.motivoCancelamento = "";
         this.dataPedido = LocalDateTime.now();
@@ -44,6 +44,7 @@ public class Pedido {
         this.de = de;
     }
 
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

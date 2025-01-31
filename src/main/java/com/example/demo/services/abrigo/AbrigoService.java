@@ -40,7 +40,7 @@ public class AbrigoService {
         Hibernate.initialize(abrigo.getProdutos());
 
         Pedido pedidoNovo = new Pedido(pedido.getProduto(),pedido.getQuantidade(),
-                cd,abrigo);
+                abrigo,cd);
 
         pedidoRP.save(pedidoNovo);
 
