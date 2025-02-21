@@ -24,9 +24,13 @@ public class AbrigoController {
     public PedidoDTO fazerPedido(@RequestBody Pedido pedido) {
         return abrigoService.fazerPedido(pedido);
     }
+<<<<<<< HEAD
 
     @GetMapping("/buscarEndereco")
     public Endereco buscarEndereco(@RequestParam String cep) {
         return abrigoService.buscarEndereco(cep);
     }
+=======
+    
+>>>>>>> cefe73e30eb079909c901f0a0251f80e84830bfd
 }

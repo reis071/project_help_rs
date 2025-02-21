@@ -1,13 +1,16 @@
 package com.example.demo.models.produtos;
 
-
+import com.example.demo.models.abrigo.Abrigo;
 import com.example.demo.models.cd.Cd;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -19,6 +22,12 @@ public class Produtos {
     private Long id;
 
     private String descricao;
+
+<<<<<<< HEAD
+
+
+=======
+>>>>>>> cefe73e30eb079909c901f0a0251f80e84830bfd
     private int quantidadeDisponivel;
 
     @ManyToOne
@@ -30,7 +39,10 @@ public class Produtos {
 
     public Produtos(String descricao, int quantidadeDisponivel, Cd cd) {
         this.descricao = descricao;
+<<<<<<< HEAD
 
+=======
+>>>>>>> cefe73e30eb079909c901f0a0251f80e84830bfd
         this.quantidadeDisponivel = quantidadeDisponivel;
         this.cd = cd;
     }

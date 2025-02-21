@@ -29,18 +29,15 @@ public class Abrigo {
 
     private String cep;
 
-    private String email;
-
     private int CapacidadeTotal = 1000;
 
     @OneToMany
     private Set<Produtos> produtos = new HashSet<>();
 
 
-    public Abrigo(String nome, String cep, String email) {
+    public Abrigo(String nome, String cep) {
         this.nome = nome;
         this.cep = cep;
-        this.email = email;
     }
 
     @Override

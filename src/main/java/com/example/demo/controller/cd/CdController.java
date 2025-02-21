@@ -48,10 +48,17 @@ public class CdController {
         return cdService.aceitarPedido(id);
     }
 
+<<<<<<< HEAD
     @PatchMapping("/rejeitarPedido")
     public String negarPedido(@RequestBody Map<String, String> payload, String motivoCancelamento){
         UUID id = UUID.fromString(payload.get("id"));
         return cdService.negarPedido(id,motivoCancelamento);
+=======
+    @PatchMapping("/recusarPedido")
+    public String recusarPedido(@RequestBody Map<String, String> payload) {
+        UUID id = UUID.fromString(payload.get("id"));
+        return cdService.recusarPedido(id);
+>>>>>>> cefe73e30eb079909c901f0a0251f80e84830bfd
     }
 
 }
