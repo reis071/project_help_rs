@@ -3,6 +3,7 @@ package com.example.demo.services.abrigo;
 import com.example.demo.dto.pedido.PedidoDTO;
 import com.example.demo.models.abrigo.Abrigo;
 import com.example.demo.models.cd.Cd;
+import com.example.demo.models.endereco.Endereco;
 import com.example.demo.models.pedido.Pedido;
 import com.example.demo.repositories.abrigo.AbrigoRP;
 
@@ -12,6 +13,9 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.Map;
 
 @AllArgsConstructor
 @Service
@@ -21,6 +25,8 @@ public class AbrigoService {
     private final PedidoRP pedidoRP;
 
     private final CdService cdService;
+
+
 
     @Transactional
     public Abrigo registrarAbrigo(Abrigo abrigo) {
@@ -45,5 +51,13 @@ public class AbrigoService {
         pedidoRP.save(pedidoNovo);
 
         return new PedidoDTO(pedidoNovo);
+    }
+
+    public Endereco buscarEndereco(String cep) {
+        RestTemplate consumidor = new RestTemplate();
+
+        String url = "https://viacep.com.br/ws/" + cep + "/json/";
+
+        return consumidor.getForObject(url, Endereco.class);
     }
 }

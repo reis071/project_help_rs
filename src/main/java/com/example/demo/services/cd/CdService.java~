@@ -125,17 +125,10 @@ public class CdService {
 
 
     @Transactional
-    public String negarPedido(UUID id, String MotivoCancelamento){
+    public String negarPedido(UUID id){
         Pedido pedido = pedidoRP.findById(id).orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
 
-        if(!pedido.getStatus().equals("Aprovado")){
-            pedido.setStatus("Negado");
-            pedido.setMotivoCancelamento(MotivoCancelamento);
-
-            pedidoRP.save(pedido);
-            return "Pedido Cancelado";
-        }
-        return "Este pedido ja foi decretado";
+        if(pedido.getStatus().equals("Aprovado"))
     }
 
 }

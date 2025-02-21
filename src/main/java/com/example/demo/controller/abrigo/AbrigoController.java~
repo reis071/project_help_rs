@@ -2,7 +2,6 @@ package com.example.demo.controller.abrigo;
 
 import com.example.demo.dto.pedido.PedidoDTO;
 import com.example.demo.models.abrigo.Abrigo;
-import com.example.demo.models.endereco.Endereco;
 import com.example.demo.models.pedido.Pedido;
 import com.example.demo.services.abrigo.AbrigoService;
 import lombok.AllArgsConstructor;
@@ -26,7 +25,7 @@ public class AbrigoController {
     }
 
     @GetMapping("/buscarEndereco")
-    public Endereco buscarEndereco(@RequestParam String cep) {
+    public String buscarEndereco(@RequestParam String cep) {
         return abrigoService.buscarEndereco(cep);
     }
 }

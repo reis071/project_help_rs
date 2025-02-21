@@ -23,7 +23,7 @@ public class Produtos {
 
     private String descricao;
 
-    private String tipo;
+
 
     private int quantidadeDisponivel;
 
@@ -34,9 +34,9 @@ public class Produtos {
 
 
 
-    public Produtos(String descricao, String tipo, int quantidadeDisponivel, Cd cd) {
+    public Produtos(String descricao, int quantidadeDisponivel, Cd cd) {
         this.descricao = descricao;
-        this.tipo = tipo;
+
         this.quantidadeDisponivel = quantidadeDisponivel;
         this.cd = cd;
     }

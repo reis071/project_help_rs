@@ -26,6 +26,7 @@ public class Pedido {
     private String status;
 
     private String motivoCancelamento;
+
     private LocalDateTime dataPedido;
 
     @ManyToOne

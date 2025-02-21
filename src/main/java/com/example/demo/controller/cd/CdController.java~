@@ -49,9 +49,8 @@ public class CdController {
     }
 
     @PatchMapping("/rejeitarPedido")
-    public String negarPedido(@RequestBody Map<String, String> payload, String motivoCancelamento){
-        UUID id = UUID.fromString(payload.get("id"));
-        return cdService.negarPedido(id,motivoCancelamento);
+    public String negarPedido(@RequestBody Map<String, String> payload, String MotivoCancelamento){
+        return cdService.negarPedido(id,MotivoCancelamento);
     }
 
 }
