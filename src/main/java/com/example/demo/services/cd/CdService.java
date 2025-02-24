@@ -35,13 +35,13 @@ public class CdService {
 
 
     public CdDTO registrarCd(Cd cd) {
-         cdRP.save(cd);
+        cdRP.save(cd);
 
         return new CdDTO(cd);
     }
 
     @Transactional
-    public Cd buscarCd(String nomeCd){
+    public Cd buscarCd(String nomeCd) {
 
         Cd cd = cdRP.findByNome(nomeCd);
 
@@ -123,32 +123,17 @@ public class CdService {
         return "Pedido aprovado";
     }
 
-    @Transactional
-    public String recusarPedido(UUID id) {
-        Pedido pedido = pedidoRP.findById(id).orElseThrow(() -> new RuntimeException("Pedido não encontrado!"));
+        @Transactional
+        public String negarPedido (UUID id, String MotivoCancelamento){
+            Pedido pedido = pedidoRP.findById(id).orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
 
-<<<<<<< HEAD
-    @Transactional
-    public String negarPedido(UUID id, String MotivoCancelamento){
-        Pedido pedido = pedidoRP.findById(id).orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
+            if (!pedido.getStatus().equals("Aprovado")) {
+                pedido.setStatus("Negado");
+                pedido.setMotivoCancelamento(MotivoCancelamento);
 
-        if(!pedido.getStatus().equals("Aprovado")){
-            pedido.setStatus("Negado");
-            pedido.setMotivoCancelamento(MotivoCancelamento);
-
-            pedidoRP.save(pedido);
-            return "Pedido Cancelado";
+                pedidoRP.save(pedido);
+                return "Pedido Cancelado";
+            }
+            return "Este pedido ja foi decretado";
         }
-        return "Este pedido ja foi decretado";
     }
-
-=======
-        pedido.setStatus("Recusado");
-
-        pedidoRP.save(pedido);
-
-        return "Pedido recusado";
-
-    }
->>>>>>> cefe73e30eb079909c901f0a0251f80e84830bfd
-}

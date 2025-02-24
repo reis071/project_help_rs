@@ -42,7 +42,7 @@ public class AbrigoService {
         Abrigo abrigo = new Abrigo(nome);
 
         enderecoRp.save(enderecoModel);
-
+        
         abrigo.setCep(enderecoModel);
         return abrigoRP.save(abrigo);
     }

@@ -27,7 +27,7 @@ public class Abrigo {
     private String nome;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "endereco_id", referencedColumnName = "id")
+    @JoinColumn()
     private EnderecoModel cep;
 
     private int CapacidadeTotal = 1000;

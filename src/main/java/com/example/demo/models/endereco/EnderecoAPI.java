@@ -1,13 +1,17 @@
 package com.example.demo.models.endereco;
 
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class Endereco {
+public class EnderecoAPI {
+
+    private Long id;
     private String cep;            // Código Postal
     private String logradouro;     // Rua
     private String complemento;    // Complemento
@@ -21,4 +25,6 @@ public class Endereco {
     private String gia;            // Código GIA (se aplicável)
     private String ddd;            // Código DDD
     private String siafi;          // Código SIAFI
+
+
 }

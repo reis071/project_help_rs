@@ -25,9 +25,6 @@ public class Produtos {
     @JsonBackReference
     private Cd cd;
 
-
-
-
     public Produtos(String descricao, int quantidadeDisponivel, Cd cd) {
         this.descricao = descricao;
 
