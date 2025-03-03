@@ -1,5 +1,7 @@
 package com.example.demo.services.abrigo;
 
+import com.example.demo.Exceptions.abrigo.AbrigoException;
+import com.example.demo.Exceptions.endereco.EnderecoException;
 import com.example.demo.dto.pedido.PedidoDTO;
 import com.example.demo.models.abrigo.Abrigo;
 import com.example.demo.models.cd.Cd;
@@ -27,18 +29,14 @@ public class AbrigoService {
     private final CdService cdService;
 
 
-
-
     @Transactional
     public Abrigo registrarAbrigo(String nome, String cep ) {
         EnderecoAPI enderecoAPI;
-        try {
-             enderecoAPI = buscarEndereco(cep);
-        }
-        catch (Exception e) {
-            throw new RuntimeException("CEP inválido");
-        }
+
+        enderecoAPI = buscarEndereco(cep);
+
         EnderecoModel enderecoModel = new EnderecoModel(enderecoAPI);
+
         Abrigo abrigo = new Abrigo(nome);
 
         enderecoRp.save(enderecoModel);
@@ -54,7 +52,7 @@ public class AbrigoService {
 
         Abrigo abrigo = abrigoRP.findByNome(pedido.getDe().getNome());
         if (abrigo == null) {
-            throw new RuntimeException("Abrigo não encontrado");
+            throw new AbrigoException("abrigo nao encontrado");
         }
 
         Hibernate.initialize(abrigo.getProdutos());
@@ -72,6 +70,11 @@ public class AbrigoService {
 
         String url = "https://viacep.com.br/ws/" + cep + "/json/";
 
-        return consumidor.getForObject(url, EnderecoAPI.class);
+        try {
+             return consumidor.getForObject(url, EnderecoAPI.class);
+        }
+        catch (Exception e) {
+            throw new EnderecoException("Endereco nao encontrado");
+        }
     }
 }

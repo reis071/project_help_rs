@@ -1,6 +1,7 @@
 package com.example.demo.services.cd;
 
 
+import com.example.demo.Exceptions.cd.CdException;
 import com.example.demo.dto.cd.CdDTO;
 import com.example.demo.dto.pedido.PedidoDTO;
 import com.example.demo.models.abrigo.Abrigo;
@@ -19,7 +20,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.repositories.cd.CdRp;
 
 import java.util.List;
-import java.util.Optional;
+
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -45,9 +46,17 @@ public class CdService {
 
         Cd cd = cdRP.findByNome(nomeCd);
 
+        if( cd == null){
+            throw new CdException("Centro de  Distribuição nao encontrado");
+        }
+
         Hibernate.initialize(cd.getProdutos());
 
+
         return cd;
+
+
+
     }
 
     @Transactional

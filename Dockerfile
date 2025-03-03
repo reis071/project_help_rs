@@ -10,6 +10,6 @@ COPY src ./src
 
 COPY . /app
 
-EXPOSE 3000:8080
+
 
 CMD ["./mvnw", "spring-boot:run"]
