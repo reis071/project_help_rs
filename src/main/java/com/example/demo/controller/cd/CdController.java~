@@ -7,7 +7,9 @@ import com.example.demo.models.cd.Cd;
 import com.example.demo.models.produtos.Produtos;
 import com.example.demo.services.cd.CdService;
 import lombok.AllArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,9 +22,10 @@ import java.util.UUID;
 @RequestMapping("/cd")
 public class CdController {
 
+
     private final CdService cdService;
 
-    @PostMapping("/registrarCd")
+    @PostMapping( name = "/registrarCd")
     public CdDTO registrarCd(@RequestBody Cd cd) {
         return cdService.registrarCd(cd);
     }
@@ -38,7 +41,8 @@ public class CdController {
         return  ResponseEntity.status(HttpStatus.CREATED).body(produto);
     }
 
-    @GetMapping("/visualizarPedido")
+    //Content Negotiation
+    @GetMapping(name = "/visualizarPedido", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity<List<PedidoDTO>> visualizarPedido(@RequestParam String nomeCd) {
         return ResponseEntity.status(HttpStatus.OK).body(cdService.visualizarPedido(nomeCd));
     }

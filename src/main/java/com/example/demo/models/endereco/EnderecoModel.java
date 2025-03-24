@@ -1,6 +1,7 @@
 package com.example.demo.models.endereco;
 
 import com.example.demo.models.abrigo.Abrigo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,6 +29,7 @@ public class EnderecoModel {
     private String regiao;
     private String ddd;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "cep")
     private Abrigo abrigo;
 

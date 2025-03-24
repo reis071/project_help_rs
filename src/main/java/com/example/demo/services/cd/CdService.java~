@@ -28,7 +28,6 @@ import com.example.demo.repositories.cd.CdRp;
 
 import java.util.List;
 
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -41,7 +40,6 @@ public class CdService {
     private final ProdutosRP produtosRP;
     private final PedidoRP pedidoRP;
     private final AbrigoRP abrigoRP;
-
 
     private final AbrigoService abrigoService;
 
@@ -117,7 +115,7 @@ public class CdService {
             }
         });
 
-        Abrigo abrigo = abrigoService.buscarAbrigoDetails(pedido.getDe().getNome());
+        Abrigo abrigo = abrigoRP.findByNome(pedido.getDe().getNome());
 
 
         Produtos produtoNoAbrigo = abrigo.getProdutos().stream()
