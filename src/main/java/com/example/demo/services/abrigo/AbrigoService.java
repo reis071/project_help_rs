@@ -3,6 +3,7 @@ package com.example.demo.services.abrigo;
 import com.example.demo.Exceptions.abrigo.AbrigoException;
 import com.example.demo.Exceptions.endereco.EnderecoException;
 import com.example.demo.controller.abrigo.AbrigoController;
+import com.example.demo.daos.AbrigoDAO;
 import com.example.demo.dto.abrigo.AbrigoDTO;
 import com.example.demo.dto.pedido.PedidoDTO;
 import com.example.demo.models.abrigo.Abrigo;
@@ -10,7 +11,6 @@ import com.example.demo.models.cd.Cd;
 import com.example.demo.models.endereco.EnderecoAPI;
 import com.example.demo.models.endereco.EnderecoModel;
 import com.example.demo.models.pedido.Pedido;
-import com.example.demo.repositories.abrigo.AbrigoRP;
 
 import com.example.demo.repositories.cd.CdRp;
 import com.example.demo.repositories.endereco.EnderecoRepository;
@@ -31,14 +31,14 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 
 @AllArgsConstructor
-    @Service
-    public class AbrigoService {
+@Service
+public class AbrigoService {
 
-        private final AbrigoRP abrigoRP;
+
         private final PedidoRP pedidoRP;
         private final EnderecoRepository enderecoRp;
         private final CdRp cdRp;
-
+        private final AbrigoDAO abrigoDAO;
 
 
     @Transactional
@@ -51,10 +51,11 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
         Abrigo abrigo = new Abrigo(nome);
 
-        enderecoRp.save(enderecoModel);
 
         abrigo.setCep(enderecoModel);
-        abrigoRP.save(abrigo);
+        enderecoRp.save(enderecoModel);
+        abrigoDAO.cadastrarAbrigo(abrigo);
+
         return  new AbrigoDTO(abrigo);
     }
 
@@ -65,7 +66,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 
         Abrigo abrigo = buscarAbrigoDetails(pedido.getDe().getNome());
-
 
         Hibernate.initialize(abrigo.getProdutos());
 
@@ -79,21 +79,16 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
     public AbrigoDTO buscarAbrigo(String nomeAbrigo) {
 
-        Abrigo abrigo = abrigoRP.findByNome(nomeAbrigo).orElseThrow( () -> new AbrigoException("Abrigo não encontrado")) ;
+        Abrigo abrigo = abrigoDAO.buscarAbrigo(nomeAbrigo);
 
         AbrigoDTO abrigoDTO = new AbrigoDTO(abrigo);
 
-        extracted(abrigoDTO);
+        linksHateoas(abrigoDTO);
         return abrigoDTO;
     }
 
-
     public Abrigo buscarAbrigoDetails(String nomeAbrigo) {
-
-        return abrigoRP.findByNome(nomeAbrigo).orElseThrow( () -> new AbrigoException("Abrigo não encontrado")) ;
-
-
-
+        return abrigoDAO.buscarAbrigoDetails(nomeAbrigo);
     }
 
     public EnderecoAPI buscarEndereco(String cep) {
@@ -109,7 +104,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
         }
     }
 
-    private static void extracted(AbrigoDTO abrigoDTO) {
+    private static void linksHateoas(AbrigoDTO abrigoDTO) {
         abrigoDTO.add(linkTo(methodOn(AbrigoController.class).buscarAbrigo(abrigoDTO.getNome())).withSelfRel().withType("GET"));
         abrigoDTO.add(linkTo(methodOn(AbrigoController.class).registrarAbrigo( null)).withRel("registrarAbrigo").withType("POST"));
         abrigoDTO.add(linkTo(methodOn(AbrigoController.class).fazerPedido( null)).withRel("fazerPedido").withType("POST"));
