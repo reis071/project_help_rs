@@ -2,7 +2,10 @@ package com.example.demo.services.cd;
 
 
 import com.example.demo.Exceptions.cd.CdException;
-import com.example.demo.Exceptions.pedido.PedidoException;
+import com.example.demo.daos.abrigo.AbrigoDAO;
+import com.example.demo.daos.cd.CdDAO;
+import com.example.demo.daos.pedido.PedidoDAO;
+import com.example.demo.daos.produtos.ProdutosDAO;
 import com.example.demo.dto.cd.CdDTO;
 import com.example.demo.dto.pedido.PedidoDTO;
 import com.example.demo.models.abrigo.Abrigo;
@@ -10,25 +13,17 @@ import com.example.demo.models.cd.Cd;
 
 import com.example.demo.models.pedido.Pedido;
 import com.example.demo.models.produtos.Produtos;
-import com.example.demo.repositories.abrigo.AbrigoRP;
-import com.example.demo.repositories.pedido.PedidoRP;
 import com.example.demo.repositories.produtos.ProdutosRP;
-import com.example.demo.services.abrigo.AbrigoService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-
-import org.hibernate.Hibernate;
-
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.stereotype.Service;
-import com.example.demo.repositories.cd.CdRp;
 
 import java.util.List;
 
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -37,75 +32,56 @@ import java.util.stream.Collectors;
 @Service
 public class CdService {
 
-    private final CdRp cdRP;
-    private final ProdutosRP produtosRP;
-    private final PedidoRP pedidoRP;
-    private final AbrigoRP abrigoRP;
+    private final CdDAO cdDAO;
 
-
-    private final AbrigoService abrigoService;
+    private final ProdutosDAO produtosDAO;
+    private final PedidoDAO pedidoDAO;
+    private final AbrigoDAO abrigoDAO;
 
     private static final Logger logger = LoggerFactory.getLogger(CdService.class);
 
-
-
-
     public CdDTO registrarCd(Cd cd) {
-        cdRP.save(cd);
-
+        cdDAO.registrarCd(cd);
         return new CdDTO(cd);
     }
 
-    @Transactional
-    public Cd buscarCd(String nomeCd) {
-
-        Cd cd = cdRP.findByNome(nomeCd);
-
-        if( cd == null){
-            throw new CdException("Centro de  Distribuição nao encontrado");
-        }
-
-        Hibernate.initialize(cd.getProdutos());
-
-
-        return cd;
-
-
-
+    public CdDTO buscarCd(String nomeCd) {
+        return new CdDTO( cdDAO.buscarCd(nomeCd) );
     }
 
-    @Transactional
     public Pedido buscarPedido(UUID id) {
-        return pedidoRP.findById(id).orElseThrow(() -> new PedidoException("Pedido nao encontrado"));
+        return pedidoDAO.buscarPedido(id);
     }
 
-    @Transactional
+
     public Produtos cadastrarProdutosCd(Produtos produtos) {
-        Cd cd = cdRP.findByNome(produtos.getCd().getNome());
+        Cd cd = cdDAO.buscarCd(produtos.getCd().getNome());
 
         cd.getProdutos().add(produtos);
+
         produtos.setCd(cd);
-        return produtosRP.save(produtos);
+
+        return produtosDAO.cadastrarProduto(produtos);
     }
 
-    @Transactional
+
     public List<PedidoDTO> visualizarPedido(String nomeCd) {
 
-        Cd cd = buscarCd(nomeCd);
+        Cd cd = cdDAO.buscarCd(nomeCd);
 
 
-        List<Pedido> pedidos = pedidoRP.findStatus(cd);
+        List<Pedido> pedidos = pedidoDAO.statusPedido(cd);
 
         return pedidos.stream()
                 .map(PedidoDTO::new)
                 .collect(Collectors.toList());
     }
 
-    @Transactional
+
     public String aceitarPedido(UUID id) {
         Pedido pedido = buscarPedido(id);
 
-        Cd cd = buscarCd(pedido.getPara().getNome());
+        Cd cd = cdDAO.buscarCd(pedido.getPara().getNome());
 
 
         cd.getProdutos().forEach(produto -> {
@@ -117,7 +93,7 @@ public class CdService {
             }
         });
 
-        Abrigo abrigo = abrigoService.buscarAbrigoDetails(pedido.getDe().getNome());
+        Abrigo abrigo = abrigoDAO.buscarAbrigoDetails(pedido.getDe().getNome());
 
 
         Produtos produtoNoAbrigo = abrigo.getProdutos().stream()
@@ -128,28 +104,24 @@ public class CdService {
         if (produtoNoAbrigo != null) {
             produtoNoAbrigo.setQuantidadeDisponivel(produtoNoAbrigo.getQuantidadeDisponivel() + pedido.getQuantidade());
         } else {
+
             Produtos novoProduto = new Produtos();
+
             novoProduto.setDescricao(pedido.getProduto());
             novoProduto.setQuantidadeDisponivel(pedido.getQuantidade());
-
-
-            novoProduto = produtosRP.save(novoProduto);
-
             abrigo.getProdutos().add(novoProduto);
+
+            produtosDAO.cadastrarProduto(novoProduto);
         }
 
-
-        cdRP.save(cd);
-        abrigoRP.save(abrigo);
-
-
         pedido.setStatus("Aprovado");
-        pedidoRP.save(pedido);
+        cdDAO.registrarCd(cd);
+        abrigoDAO.cadastrarAbrigo(abrigo);
+        pedidoDAO.cadastrarPedido(pedido);
 
         return "Pedido aprovado";
     }
 
-    @Transactional
     public String negarPedido (UUID id, String MotivoCancelamento){
             Pedido pedido = buscarPedido(id);
 
@@ -157,7 +129,7 @@ public class CdService {
                 pedido.setStatus("Negado");
                 pedido.setMotivoCancelamento(MotivoCancelamento);
 
-                pedidoRP.save(pedido);
+                pedidoDAO.cadastrarPedido(pedido);
                 return "Pedido Cancelado";
             }
 

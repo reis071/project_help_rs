@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import static org.springframework.web.servlet.function.ServerResponse.status;
+
 @AllArgsConstructor
 @RestController
 @RequestMapping("/cd")
@@ -31,8 +33,8 @@ public class CdController {
     }
 
     @GetMapping("/buscarCd")
-    public Cd listarCd(@RequestParam String cd) {
-        return cdService.buscarCd(cd);
+    public ResponseEntity<CdDTO> listarCd(@RequestParam String cd) {
+        return  ResponseEntity.status(HttpStatus.OK).body(cdService.buscarCd(cd));
     }
 
     @PostMapping("/registrarProduto")
