@@ -3,9 +3,10 @@ package com.example.demo.dto.cd;
 import com.example.demo.models.cd.Cd;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.hateoas.RepresentationModel;
 
 @Getter @Setter
-public class CdDTO {
+public class CdDTO extends RepresentationModel<CdDTO> {
 
     private Long id;
     private String nome;

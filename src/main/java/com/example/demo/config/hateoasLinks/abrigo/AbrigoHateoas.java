@@ -1,4 +1,4 @@
-package com.example.demo.config.hateoasLinks;
+package com.example.demo.config.hateoasLinks.abrigo;
 
 import com.example.demo.controller.abrigo.AbrigoController;
 import com.example.demo.dto.abrigo.AbrigoDTO;

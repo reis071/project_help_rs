@@ -1,8 +1,8 @@
 package com.example.demo.services.abrigo;
 
 
-import com.example.demo.controller.abrigo.AbrigoController;
 import com.example.demo.daos.abrigo.AbrigoDAO;
+import com.example.demo.daos.cd.CdDAO;
 import com.example.demo.daos.endereco.EnderecoDao;
 import com.example.demo.daos.pedido.PedidoDAO;
 import com.example.demo.dto.abrigo.AbrigoDTO;
@@ -13,21 +13,18 @@ import com.example.demo.models.endereco.EnderecoAPI;
 import com.example.demo.models.endereco.EnderecoModel;
 import com.example.demo.models.pedido.Pedido;
 
-import com.example.demo.repositories.cd.CdRp;
-import com.example.demo.repositories.pedido.PedidoRP;
 
 
-import jakarta.transaction.Transactional;
+
 import lombok.AllArgsConstructor;
 import org.hibernate.Hibernate;
 
 import org.springframework.stereotype.Service;
 
 
-import static com.example.demo.config.hateoasLinks.AbrigoHateoas.linksHateoas;
+import static com.example.demo.config.hateoasLinks.abrigo.AbrigoHateoas.linksHateoas;
 import static com.example.demo.daos.endereco.EnderecoDao.buscarEndereco;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 
 
 @AllArgsConstructor
@@ -36,7 +33,7 @@ public class AbrigoService {
 
         private final EnderecoDao enderecoDao;
         private final PedidoDAO pedidoDAO;
-        private final CdRp cdRp;
+        private final CdDAO cdDAO;
         private final AbrigoDAO abrigoDAO;
 
 
@@ -59,7 +56,7 @@ public class AbrigoService {
 
     public PedidoDTO fazerPedido(Pedido pedido) {
 
-        Cd cd = cdRp.findByNome(pedido.getPara().getNome());
+        Cd cd = cdDAO.buscarCd(pedido.getPara().getNome());
 
         Abrigo abrigo = buscarAbrigoDetails(pedido.getDe().getNome());
 

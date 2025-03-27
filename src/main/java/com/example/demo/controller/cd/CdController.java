@@ -33,8 +33,8 @@ public class CdController {
     }
 
     @GetMapping("/buscarCd")
-    public ResponseEntity<CdDTO> listarCd(@RequestParam String cd) {
-        return  ResponseEntity.status(HttpStatus.OK).body(cdService.buscarCd(cd));
+    public CdDTO listarCd(@RequestParam String cd) {
+        return  cdService.buscarCd(cd);
     }
 
     @PostMapping("/registrarProduto")
