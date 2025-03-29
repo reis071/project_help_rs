@@ -1,4 +1,4 @@
-package com.example.demo.Exceptions.abrigo;
+package com.example.demo.config.Exceptions.abrigo;
 
 public class AbrigoException extends RuntimeException{
 

@@ -1,6 +1,6 @@
 package com.example.demo.daos.pedido;
 
-import com.example.demo.Exceptions.pedido.PedidoException;
+import com.example.demo.config.Exceptions.pedido.PedidoException;
 import com.example.demo.models.cd.Cd;
 import com.example.demo.models.pedido.Pedido;
 import com.example.demo.repositories.pedido.PedidoRP;

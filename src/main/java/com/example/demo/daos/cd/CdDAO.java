@@ -1,6 +1,6 @@
 package com.example.demo.daos.cd;
 
-import com.example.demo.Exceptions.cd.CdException;
+import com.example.demo.config.Exceptions.cd.CdException;
 import com.example.demo.dto.cd.CdDTO;
 import com.example.demo.models.cd.Cd;
 import com.example.demo.repositories.cd.CdRp;

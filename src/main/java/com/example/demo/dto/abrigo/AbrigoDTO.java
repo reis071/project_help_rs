@@ -1,7 +1,7 @@
 package com.example.demo.dto.abrigo;
 
+import com.example.demo.dto.endereco.EnderecoDTO;
 import com.example.demo.models.abrigo.Abrigo;
-import com.example.demo.models.endereco.EnderecoModel;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,12 +13,12 @@ public class AbrigoDTO extends RepresentationModel<AbrigoDTO> {
 
     private Long id;
     private String nome;
-    private String cep;
+    private EnderecoDTO endereco;
 
     public AbrigoDTO(Abrigo abrigo) {
         this.id = abrigo.getId();
         this.nome = abrigo.getNome();
-        this.cep = abrigo.getCep().getCep();
+        this.endereco = new EnderecoDTO(abrigo.getCep());
     }
 
 }

@@ -1,10 +1,9 @@
-package com.example.demo.Exceptions.handler;
+package com.example.demo.config.Exceptions.handler;
 
-import com.example.demo.Exceptions.abrigo.AbrigoException;
-import com.example.demo.Exceptions.cd.CdException;
-import com.example.demo.Exceptions.endereco.EnderecoException;
-import com.example.demo.Exceptions.pedido.PedidoException;
-import com.example.demo.models.endereco.EnderecoModel;
+import com.example.demo.config.Exceptions.abrigo.AbrigoException;
+import com.example.demo.config.Exceptions.cd.CdException;
+import com.example.demo.config.Exceptions.endereco.EnderecoException;
+import com.example.demo.config.Exceptions.pedido.PedidoException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

@@ -1,6 +1,6 @@
 package com.example.demo.daos.abrigo;
 
-import com.example.demo.Exceptions.abrigo.AbrigoException;
+import com.example.demo.config.Exceptions.abrigo.AbrigoException;
 import com.example.demo.models.abrigo.Abrigo;
 import com.example.demo.repositories.abrigo.AbrigoRP;
 

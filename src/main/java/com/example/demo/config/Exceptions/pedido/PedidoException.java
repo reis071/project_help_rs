@@ -1,4 +1,4 @@
-package com.example.demo.Exceptions.pedido;
+package com.example.demo.config.Exceptions.pedido;
 
 public class PedidoException extends RuntimeException{
 

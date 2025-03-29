@@ -1,7 +1,7 @@
 package com.example.demo.services.cd;
 
 
-import com.example.demo.Exceptions.cd.CdException;
+import com.example.demo.config.Exceptions.cd.CdException;
 import com.example.demo.daos.abrigo.AbrigoDAO;
 import com.example.demo.daos.cd.CdDAO;
 import com.example.demo.daos.pedido.PedidoDAO;
@@ -13,8 +13,6 @@ import com.example.demo.models.cd.Cd;
 
 import com.example.demo.models.pedido.Pedido;
 import com.example.demo.models.produtos.Produtos;
-import com.example.demo.repositories.produtos.ProdutosRP;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 
 import org.slf4j.Logger;

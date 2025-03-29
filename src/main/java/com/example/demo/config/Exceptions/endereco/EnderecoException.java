@@ -1,4 +1,4 @@
-package com.example.demo.Exceptions.endereco;
+package com.example.demo.config.Exceptions.endereco;
 
 public class EnderecoException extends  RuntimeException{
 
